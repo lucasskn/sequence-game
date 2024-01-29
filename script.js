@@ -1,5 +1,6 @@
 let botao = document.getElementById('restartID')
 let startButton = document.getElementById('start')
+let errorMessage = document.getElementById('errorMessage')
 let keys = ["A","S","D","Q","W","E","A","S","D","Q","W","E"]
 keys.length = 12
 let sequence = []
@@ -14,6 +15,8 @@ const container = document.getElementById('wrapper')
 
 let listItem
 let lista
+
+let timeoutID
 
 for(const item of random) {
 
@@ -43,12 +46,33 @@ for(const item of random) {
   console.log(random);
 } */
 
+
+
 console.log(sequence);
 
 let wrapper = document.getElementById("wrapper")
 let completo = document.getElementById("completo")
+const timeOut = document.getElementById("timeOut")
 
 const minhaLista = document.getElementById("wrapper") 
+
+function start() {
+  const botaum = document.getElementById('start')
+  loadTimeout.classList.add("animationStart")
+  botaum.classList.add("hide")
+  wrapper.classList.remove("hide")
+  loadTimeout.classList.remove("hide")
+  completo.classList.add("hide")
+
+  document.addEventListener("keydown",cliquei)
+  timeoutID = setTimeout(() => {
+    timeOut.classList.remove("hide")
+    wrapper.classList.add("hide")
+    loadTimeout.classList.add("hide")
+    errorMessage.innerHTML = "timeout."
+    botao.classList.remove("hide")
+  },5000)
+}
 
 function cliquei(event){
   const tecla = event.key.toUpperCase()
@@ -58,23 +82,17 @@ function cliquei(event){
 
   if(random[0] !== tecla) {
     console.log("erro");
-/*     for(let i = 0; i < sequence.length; i++) {
-      if(sequence[i] !== tecla) {
-        const posErrada = sequence.length
-        minhaLista.children[posErrada].classList.add("failed")
-        if(sequence.length == 8) {
-          break
-        }
-      }
-    }
-/*     setTimeout(() => {
-      location.reload()
-    },1000) */
     const posErrada = sequence.length
     minhaLista.children[posErrada].classList.add("failed")
-/*     if(random == 0) {
-      location.reload()
-    } */
+    clearTimeout(timeoutID)
+
+    setTimeout(() => {
+      timeOut.classList.remove("hide")
+      wrapper.classList.add("hide")
+      loadTimeout.classList.add("hide")
+      errorMessage.innerHTML = "sequence failed."
+      botao.classList.remove("hide")
+    },400)
 
   } else {
     console.log("certo");
@@ -87,51 +105,45 @@ function cliquei(event){
 
     minhaLista.children[posCorreta].classList.add("success")
   }
-
-/*   for(let i = 0; i <= sequence.length; i++) {
-    if(sequence[i] === tecla) {
-      minhaLista.children[i].classList.add("success")
-    } else if(sequence[i] !== tecla){
-      minhaLista.children[i].classList.add("failed")
-    }
-  } */
-
   
-  if(sequence.length == 8) {
-
-    console.log("parabéns!");
+  if(sequence.length == 12) {
     setTimeout(() => {
       wrapper.classList.add("hide")
       completo.classList.remove("hide")
       botao.classList.remove("hide")
+      timeOut.classList.add("hide")
+      loadTimeout.classList.add("hide")
 
-    },1000)
+      
+    },400)
+    clearTimeout(timeoutID)
   }
 }
 const loadTimeout = document.getElementById("load")
 
 
 function restart() {
-  const timeOut = document.getElementById("timeOut")
-  timeOut.classList.remove("hide")
-  wrapper.classList.add("hide")
-  loadTimeout.classList.add("hide")
 
-  setTimeout(() => {location.reload()},2000)
+
+
+  setTimeout(() => {location.reload()},1000)
 }
 
-function start() {
-  const botaum = document.getElementById('start')
-  loadTimeout.classList.add("animationStart")
-  botaum.classList.add("hide")
-  wrapper.classList.remove("hide")
-  loadTimeout.classList.remove("hide")
-  completo.classList.add("hide")
 
-  document.addEventListener("keydown",cliquei)
-  setTimeout(() => {restart()},5000)
-}
 
 botao.addEventListener("click", restart)
 startButton.addEventListener("click", start)
 
+
+/*     for(let i = 0; i < sequence.length; i++) { OUTRA ALTERNATIVA PARA CHECAR O ERRO
+      if(sequence[i] !== tecla) {
+        const posErrada = sequence.length
+        minhaLista.children[posErrada].classList.add("failed")
+        if(sequence.length == 8) {
+          break
+        }
+      }
+    }
+/*     setTimeout(() => {
+      location.reload()
+    },1000) */
