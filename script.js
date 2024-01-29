@@ -117,7 +117,7 @@ function restart() {
   wrapper.classList.add("hide")
   loadTimeout.classList.add("hide")
 
-  setTimeout(() => {location.reload()},3000)
+  setTimeout(() => {location.reload()},2000)
 }
 
 function start() {
@@ -129,7 +129,7 @@ function start() {
   completo.classList.add("hide")
 
   document.addEventListener("keydown",cliquei)
-  setTimeout(() => {restart()},3000)
+  setTimeout(() => {restart()},5000)
 }
 
 botao.addEventListener("click", restart)
